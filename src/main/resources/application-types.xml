@@ -1,0 +1,62 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<types:mule xmlns:types="http://www.mulesoft.org/schema/mule/types">
+  <types:catalog>
+    <types:type name="accounts_json" format="json">
+      <types:shape format="weave" example="examples/accounts.json"><![CDATA[%dw 2.0
+
+type accounts_json = Array<{|  id: String,   firstName: String,   lastName: String,   address: String,   postal: String,   country: String,   miles: Number {"typeId": "int"},   creationDate: String,   "type": String|}> {"example": "[{\"id\":\"ABC-1234\",\"firstName\":\"John\",\"lastName\":\"Doe\",\"address\":\"123 Main St., Dallas TX\",\"postal\":\"77777\",\"country\":\"US\",\"miles\":999,\"creationDate\":\"2019-08-21T04:34:41.098Z\",\"type\":\"Personal\"},{\"id\":\"XYZ-8989\",\"firstName\":\"Jane\",\"lastName\":\"Doe\",\"address\":\"10 Downing St., San Francisco CA\",\"postal\":\"89897\",\"country\":\"US\",\"miles\":101,\"creationDate\":\"2018-12-09T21:53:12.127Z\",\"type\":\"Business\"}]"}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="accounts-json" format="json">
+      <types:shape format="weave" example="examples/accounts-customers copy.json"><![CDATA[%dw 2.0
+
+type accounts_json = Array<{|  firstName: String,   lastName: String,   address: String,   postal: String,   country: String,   creationDate: String,   accountType: String,   miles: Number {"typeId": "int"}|}> {"example": "[{\\\"firstName\\\":\\\"Alice\\\",\\\"lastName\\\":\\\"Green\\\",\\\"address\\\":\\\"77 Geary St., San Francisco\\\",\\\"postal\\\":\\\"94108\\\",\\\"country\\\":\\\"USA\\\",\\\"creationDate\\\":\\\"2018-10-01T23:57:59Z+0:00\\\",\\\"accountType\\\":\\\"business\\\",\\\"miles\\\":1000}]"}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="accounts-sales-json" format="json">
+      <types:shape format="weave" example="examples/accounts-1.json"><![CDATA[%dw 2.0
+
+type accounts_sales_json = Array<{|  salesId: String,   id: String,   firstName: String,   lastName: String,   address: String,   postal: String,   country: String,   creationDate: String,   accountType: String,   miles: Number {"typeId": "int"}|}> {"example": "[{\\\"salesId\\\":\\\"100Alice Green941082018-10-01T23:57:59Z+0:00\\\",\\\"id\\\":\\\"100\\\",\\\"firstName\\\":\\\"Alice\\\",\\\"lastName\\\":\\\"Green\\\",\\\"address\\\":\\\"77 Geary St., San Francisco\\\",\\\"postal\\\":\\\"94108\\\",\\\"country\\\":\\\"USA\\\",\\\"creationDate\\\":\\\"2018-10-01T23:57:59Z+0:00\\\",\\\"accountType\\\":\\\"business\\\",\\\"miles\\\":1000}]"}
+
+]]></types:shape>
+    </types:type>
+  </types:catalog>
+  <types:enrichment select="#735106f6-bfd1-47bd-a98a-2f0cedb65919">
+    <types:processor-declaration>
+      <types:output-event>
+        <types:message>
+          <types:payload type="accounts-sales-json"/>
+        </types:message>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#4fc38fcd-f2fb-46d4-be67-65244188e859">
+    <types:processor-declaration>
+      <types:output-event>
+        <types:message>
+          <types:payload type="accounts-sales-json"/>
+        </types:message>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#c53d7e4a-3849-46cf-a50d-4a08a2e2b269">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="accounts-json"/>
+        </types:message>
+      </types:input-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#8d9a6d82-b080-4ef9-8067-10b1bd5c13ee">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="accounts-json"/>
+        </types:message>
+      </types:input-event>
+    </types:processor-declaration>
+  </types:enrichment>
+</types:mule>
